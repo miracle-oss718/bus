@@ -1,0 +1,1150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7fb">
+  <title>Maison — Business Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<style>
+/* Maison Business Studio — light, premium dashboard */
+:root{--bg:#f7f7fb;--surface:#fff;--surface-2:#fafaff;--text:#202033;--muted:#88899d;--line:#ececf3;--purple:#7955e8;--purple-dark:#6540d6;--purple-soft:#f1edff;--green:#169b70;--green-soft:#e8f8f1;--amber:#b97a1d;--amber-soft:#fff5e4;--rose:#d75e7b;--rose-soft:#fff0f3;--blue:#4d7de8;--blue-soft:#edf3ff;--shadow:0 10px 35px rgba(34,29,72,.035);--radius:17px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:13px;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #c8b9ff;outline-offset:2px}
+::selection{background:#e4dbff}
+/* scrollbars */
+*::-webkit-scrollbar{width:9px;height:9px}*::-webkit-scrollbar-thumb{background:#ddd9e9;border-radius:9px;border:2px solid var(--bg)}*::-webkit-scrollbar-track{background:transparent}
+.app-shell{min-height:100vh}
+.sidebar{width:245px;background:#fff;border-right:1px solid var(--line);position:fixed;inset:0 auto 0 0;z-index:20;display:flex;flex-direction:column;padding:27px 17px 17px;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit;padding:0 10px 36px}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:#28233b;color:#fff;display:grid;place-items:center;font:800 22px Manrope,sans-serif;box-shadow:0 5px 13px #2c244020}
+.brand strong{display:block;font:800 19px Manrope,sans-serif;letter-spacing:-1px}.brand small{display:block;font-size:8px;letter-spacing:1.7px;color:#a2a1b3;font-weight:700;margin-top:1px}
+.workspace-label{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#aaa9b9;padding:0 12px 12px}
+.main-nav{display:grid;gap:5px}
+.nav-item{width:100%;display:flex;align-items:center;gap:13px;border:0;background:transparent;color:#77778d;padding:12px 13px;border-radius:10px;text-align:left;font-weight:600;transition:.18s}
+.nav-item svg{width:17px;height:17px;stroke-width:1.8}
+.nav-item:hover{background:#faf9ff;color:var(--purple)}
+.nav-item.active{background:var(--purple-soft);color:var(--purple);font-weight:700}
+.nav-count{margin-left:auto;font-size:10px;background:#e6deff;color:var(--purple);padding:3px 7px;border-radius:6px}
+.sidebar-bottom{margin-top:auto}
+.help-card{background:linear-gradient(145deg,#f5f1ff,#faf8ff);border:1px solid #eee7ff;border-radius:14px;padding:15px;margin:0 2px 18px}
+.help-icon{display:grid;place-items:center;width:31px;height:31px;border-radius:9px;background:#fff;color:var(--purple);box-shadow:0 3px 10px #5f42b20d;margin-bottom:12px}.help-icon svg{width:16px}
+.help-card strong{font:700 12px Manrope,sans-serif}.help-card p{color:#89859c;line-height:1.55;font-size:11px;margin:7px 0 12px}
+.help-card button{border:0;background:none;color:var(--purple);font-weight:700;font-size:10px;padding:0;display:flex;align-items:center;gap:5px}.help-card button svg{width:13px}
+.user-profile{display:flex;align-items:center;gap:10px;padding:19px 5px 0;border-top:1px solid var(--line);margin-top:16px}
+.avatar,.top-avatar{width:34px;height:34px;border-radius:50%;background:#f1d8c8;color:#785544;display:grid;place-items:center;font-size:10px;font-weight:800}
+.user-copy{min-width:0;flex:1}.user-copy strong,.user-copy small{display:block}.user-copy strong{font-size:11px}.user-copy small{font-size:10px;color:var(--muted);margin-top:3px}
+.icon-button{width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#77778b;display:inline-grid;place-items:center;flex-shrink:0;transition:.2s}
+.icon-button:hover{color:var(--purple);border-color:#d9ceff;background:#faf8ff}.icon-button svg{width:16px;height:16px}
+.more-button{border:0}
+.main-content{margin-left:245px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 37px;background:rgba(255,255,255,.83);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;backdrop-filter:blur(15px)}
+.breadcrumb{display:flex;align-items:center;gap:9px;color:#aaa9b9;font-size:11px}.breadcrumb svg{width:13px;height:13px}.breadcrumb strong{color:#39384f;font-weight:700}
+.topbar-actions{display:flex;align-items:center;gap:14px}
+.global-search{height:36px;width:260px;border:1px solid var(--line);border-radius:9px;background:#fbfbfe;display:flex;align-items:center;gap:8px;padding:0 9px;color:#aaa9b9;transition:.2s}
+.global-search:focus-within{border-color:#b7a5ff;box-shadow:0 0 0 3px #f1edff}
+.global-search svg{width:15px;height:15px}
+.global-search input{border:0;background:transparent;outline:0;min-width:0;width:100%;font-size:11px;color:var(--text)}
+.global-search kbd{font-size:9px;white-space:nowrap;border:1px solid #e6e5ee;background:white;padding:3px 5px;border-radius:4px;color:#aaa9b9}
+.notification-button{position:relative}.notification-dot{position:absolute;top:7px;right:7px;width:6px;height:6px;border:1px solid white;border-radius:50%;background:#f47a91}
+.top-avatar{width:31px;height:31px}
+.mobile-menu{display:none}
+.page-wrap{width:100%;max-width:1600px;margin:0 auto;padding:32px 37px 42px;flex:1}
+.view{display:none;animation:fadeIn .25s ease}.view.active{display:block}
+@keyframes fadeIn{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:27px}
+.eyebrow{font-size:9px;font-weight:800;letter-spacing:1.5px;color:#9a96b2;margin-bottom:9px}
+.live-dot{display:inline-block;width:6px;height:6px;background:#41c99b;border-radius:50%;margin-right:5px;vertical-align:1px;box-shadow:0 0 0 3px #e1f9ef}
+h1,h2,h3,p{margin-top:0}h1{font:800 27px Manrope,sans-serif;letter-spacing:-1.15px;margin-bottom:7px}
+.wave{color:var(--purple);font-size:21px}
+.page-heading p{margin:0;color:var(--muted);font-size:12px}
+.heading-actions{display:flex;gap:9px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:9px;padding:10px 14px;font-size:11px;font-weight:700;white-space:nowrap;transition:.18s}
+.button svg{width:14px;height:14px}
+.button-primary{background:var(--purple);color:white;border:1px solid var(--purple);box-shadow:0 5px 12px #7955e81a}
+.button-primary:hover{background:var(--purple-dark);transform:translateY(-1px)}
+.button-primary:disabled,.button-secondary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.button-secondary{background:#fff;color:#55556e;border:1px solid #e8e7ef}
+.button-secondary:hover{border-color:#d2c5ff;color:var(--purple)}
+.button-small{padding:8px 10px;font-size:10px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:19px}
+.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;min-width:0;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.stat-top{display:flex;align-items:center;justify-content:space-between;color:#77778c;font-size:11px;font-weight:600}
+.stat-icon{width:33px;height:33px;display:grid;place-items:center;border-radius:10px}
+.stat-icon svg{width:16px;height:16px}
+.stat-icon.purple{color:var(--purple);background:var(--purple-soft)}.stat-icon.blue{color:var(--blue);background:var(--blue-soft)}.stat-icon.amber{color:var(--amber);background:var(--amber-soft)}.stat-icon.rose{color:var(--rose);background:var(--rose-soft)}.stat-icon.green{color:var(--green);background:var(--green-soft)}
+.stat-value{font:800 24px Manrope,sans-serif;letter-spacing:-.8px;margin:17px 0 10px;white-space:nowrap}
+.stat-foot{display:flex;align-items:center;gap:6px;font-size:9px;color:#a1a0b0;position:relative;z-index:1}
+.trend{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;white-space:nowrap}
+.trend svg{width:12px;height:12px}
+.trend.positive{color:#14996e}.trend.neutral{color:#7e7b96}.trend.warning{color:#c17c1b}
+.stat-spark{height:23px;position:absolute;right:0;bottom:0;width:40%;display:flex;align-items:end;gap:4px;opacity:.55;padding-right:16px}
+.stat-spark span{flex:1;border-radius:3px 3px 0 0}
+.spark-purple span{background:#e0d7ff}.spark-blue span{background:#d4e1ff}.spark-amber span{background:#ffe7be}.spark-rose span{background:#ffd9e1}.spark-green span{background:#bdeeda}
+.spark-purple span:nth-child(1){height:28%}.spark-purple span:nth-child(2){height:45%}.spark-purple span:nth-child(3){height:35%}.spark-purple span:nth-child(4){height:70%}.spark-purple span:nth-child(5){height:50%}.spark-purple span:nth-child(6){height:80%}.spark-purple span:nth-child(7){height:100%}
+.spark-blue span:nth-child(1){height:25%}.spark-blue span:nth-child(2){height:38%}.spark-blue span:nth-child(3){height:32%}.spark-blue span:nth-child(4){height:66%}.spark-blue span:nth-child(5){height:55%}.spark-blue span:nth-child(6){height:78%}.spark-blue span:nth-child(7){height:100%}
+.spark-amber span:nth-child(1){height:85%}.spark-amber span:nth-child(2){height:66%}.spark-amber span:nth-child(3){height:74%}.spark-amber span:nth-child(4){height:50%}.spark-amber span:nth-child(5){height:61%}.spark-amber span:nth-child(6){height:38%}.spark-amber span:nth-child(7){height:30%}
+.spark-rose span:nth-child(1){height:28%}.spark-rose span:nth-child(2){height:50%}.spark-rose span:nth-child(3){height:40%}.spark-rose span:nth-child(4){height:75%}.spark-rose span:nth-child(5){height:60%}.spark-rose span:nth-child(6){height:85%}.spark-rose span:nth-child(7){height:100%}
+.spark-green span:nth-child(1){height:35%}.spark-green span:nth-child(2){height:55%}.spark-green span:nth-child(3){height:45%}.spark-green span:nth-child(4){height:78%}.spark-green span:nth-child(5){height:62%}.spark-green span:nth-child(6){height:88%}.spark-green span:nth-child(7){height:100%}
+.overview-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,1fr);gap:17px;margin-bottom:18px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);min-width:0}
+.revenue-panel,.fulfilment-panel,.orders-panel,.attention-panel,.products-panel{padding:21px}
+.panel-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.panel-heading h2{font:800 14px Manrope,sans-serif;letter-spacing:-.3px;margin:0 0 5px}.panel-heading p{font-size:10px;color:var(--muted);margin:0}
+.segmented-control{display:flex;gap:2px;padding:3px;background:#f6f5fa;border-radius:8px}
+.segmented-control button{border:0;background:transparent;color:#9291a5;border-radius:6px;padding:6px 9px;font-size:9px;font-weight:700}
+.segmented-control button.selected{background:#fff;color:var(--purple);box-shadow:0 1px 4px #2017430c}
+.revenue-summary{display:flex;align-items:center;gap:10px;margin-top:22px}
+.revenue-summary strong{font:800 25px Manrope,sans-serif;letter-spacing:-1px}
+.revenue-summary small{font-size:9px;color:#aaa9b8}
+.chart-wrap{height:205px;margin-top:13px;position:relative}
+.chart-wrap canvas{width:100%!important;height:100%!important}
+.chart-foot{display:flex;justify-content:space-between;color:#a3a2b1;font-size:9px;padding-top:9px}
+.chart-foot>span:first-child{display:flex;align-items:center;gap:6px;color:#7f7d95}
+.legend-dot{width:7px;height:7px;border-radius:50%;background:var(--purple)}
+.fulfilment-total{display:flex;align-items:baseline;gap:9px;margin-top:28px}
+.fulfilment-total strong{font:800 30px Manrope,sans-serif;letter-spacing:-1px}
+.fulfilment-total span{color:#9998aa;font-size:10px}
+.fulfilment-bar{height:9px;display:flex;gap:3px;margin:17px 0 21px;border-radius:8px;overflow:hidden}
+.fulfilment-bar span{display:block;height:100%;border-radius:4px;transition:width .4s ease}
+.bar-delivered{background:#7955e8}.bar-processing{background:#b8a6fa}.bar-pending{background:#eee9ff}
+.fulfilment-legend{display:grid;gap:13px}
+.fulfilment-legend>div{display:flex;align-items:center;gap:8px;font-size:10px;color:#85849a}
+.fulfilment-legend strong{margin-left:auto;color:#34334b;font-size:11px}
+.legend-square{width:8px;height:8px;border-radius:3px}
+.legend-square.delivered{background:#7955e8}.legend-square.processing{background:#b8a6fa}.legend-square.pending{background:#eee9ff}
+.fulfilment-note{display:flex;align-items:center;gap:8px;background:#f8f6ff;color:#817c9a;padding:11px;border-radius:9px;margin-top:22px;font-size:10px}
+.fulfilment-note svg{width:14px;height:14px;color:var(--purple);flex-shrink:0}.fulfilment-note strong{color:#5d4a9c}
+.lower-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,1fr);gap:17px;margin-bottom:18px}
+.orders-panel,.attention-panel{padding:20px 0 0}
+.orders-panel>.panel-heading,.attention-panel>.panel-heading{padding:0 20px 17px}
+.text-button{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--purple);font-size:10px;font-weight:700;white-space:nowrap}
+.text-button svg{width:13px}
+.table-scroll{overflow-x:auto;width:100%}
+table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}
+thead th{font-size:8px;letter-spacing:.75px;font-weight:800;color:#a3a2b3;background:#fcfcfe;padding:12px 13px;border-top:1px solid #f2f1f6;border-bottom:1px solid #f2f1f6;position:sticky;top:0;z-index:1}
+tbody td{padding:13px;border-bottom:1px solid #f3f2f7;font-size:10px;color:#727188}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:background .12s}
+tbody tr:hover{background:#fdfcff}
+.orders-panel table th:first-child,.orders-panel table td:first-child{padding-left:20px}
+.order-id{color:#5d4ac1;font-weight:800;font-size:10px}
+.customer-cell{display:flex;align-items:center;gap:8px}
+.mini-avatar{width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:#f0edfa;color:#7864bd;font-size:9px;font-weight:800;flex-shrink:0}
+.customer-cell strong{display:block;color:#4c4b63;font-size:10px}
+.customer-cell small{display:block;color:#a3a2b3;font-size:9px;margin-top:3px}
+.product-cell{display:flex;align-items:center;gap:8px}
+.product-thumb{width:30px;height:34px;border-radius:6px;background:#f4f1ed;object-fit:cover;flex-shrink:0}
+.product-cell>span{font-weight:600;color:#57566d}
+.status-pill{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:5px 7px;font-size:8px;font-weight:800}
+.status-pill:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.status-paid,.status-delivered,.status-in-stock{background:#eaf8f2;color:#198d68}
+.status-partial,.status-processing,.status-low-stock{background:#fff5e5;color:#b57921}
+.status-pending,.status-out-of-stock{background:#fff0f3;color:#c35a76}
+.status-ready{background:#efebff;color:#7955e8}
+.status-cancelled{background:#f0eff4;color:#8d8b9f}
+.row-action{width:27px;height:27px;border:1px solid var(--line);background:#fff;border-radius:7px;display:grid;place-items:center;color:#8e8ca1;transition:.15s}
+.row-action:hover{color:var(--purple);border-color:#d2c5ff}
+.row-action svg{width:14px;height:14px}
+.attention-count{border-radius:7px;background:#fff0f3;color:#cf5e7b;padding:5px 8px;font-size:10px;font-weight:800}
+.attention-list{padding:0 18px 15px;display:grid;gap:7px}
+.attention-item{display:flex;align-items:flex-start;gap:10px;padding:11px 10px;border:1px solid #f1eff6;border-radius:10px;transition:.15s}
+.attention-item:hover{border-color:#e2d9ff}
+.attention-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;flex-shrink:0}
+.attention-icon svg{width:15px;height:15px}
+.attention-icon.amber{color:#b57921;background:#fff4df}.attention-icon.rose{color:#cc5e7a;background:#fff0f3}.attention-icon.purple{color:#7955e8;background:#f1edff}
+.attention-copy{flex:1;min-width:0}
+.attention-copy strong{display:block;font-size:10px;color:#4f4e66;margin:1px 0 4px}
+.attention-copy p{margin:0;color:#9b99ad;font-size:9px;line-height:1.5}
+.attention-item button{background:none;border:0;color:var(--purple);font-size:9px;font-weight:800;padding:3px 0;white-space:nowrap}
+.products-panel{padding:20px;margin-bottom:0}
+.best-sellers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:18px}
+.seller-card{display:flex;align-items:center;gap:10px;min-width:0}
+.seller-image{width:51px;height:58px;object-fit:cover;border-radius:9px;background:#f2f0ec;flex-shrink:0}
+.seller-copy{min-width:0}
+.seller-copy strong{font-size:10px;display:block;line-height:1.45;color:#4e4d63}
+.seller-copy small{font-size:9px;display:block;color:#a1a0b1;margin:4px 0}
+.seller-copy b{font-size:10px;color:#5e4bc3}
+.app-footer{display:flex;justify-content:space-between;padding:17px 37px;border-top:1px solid var(--line);font-size:8px;color:#aaa9b8;letter-spacing:.5px}
+.app-footer>span:last-child{letter-spacing:0}
+.app-footer svg{width:11px;height:11px;color:#c78ba4;vertical-align:-2px}
+.table-toolbar{padding:17px 19px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.filter-tabs{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.filter-tabs button{border:0;background:transparent;border-radius:7px;padding:8px 10px;font-size:10px;color:#89889d;font-weight:700;transition:.15s}
+.filter-tabs button.selected{background:#f1edff;color:var(--purple)}
+.filter-tabs button span{font-size:9px;margin-left:4px;opacity:.75}
+.table-search{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:8px;padding:0 10px;height:34px;min-width:180px;color:#aaa9b9;transition:.2s}
+.table-search:focus-within{border-color:#b7a5ff;box-shadow:0 0 0 3px #f1edff}
+.table-search svg{width:14px;height:14px;flex-shrink:0}
+.table-search input{width:100%;min-width:0;border:0;outline:0;background:transparent;font-size:10px;color:var(--text)}
+.full-table th,.full-table td{padding:13px 14px}
+.full-table td:first-child,.full-table th:first-child{padding-left:19px}
+.toolbar-title{font:800 13px Manrope,sans-serif;margin:0 0 4px}
+.toolbar-subtitle{font-size:10px;color:var(--muted);margin:0}
+.inventory-summary,.payment-summary,.customer-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.summary-card{padding:17px 19px;background:white;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.summary-card span{font-size:10px;color:#89889c;display:block}
+.summary-card strong{display:block;font:800 23px Manrope,sans-serif;letter-spacing:-.7px;margin-top:9px}
+.summary-card small{font-size:9px;color:#aaa9b7;display:block;margin-top:5px}
+.summary-card .summary-icon{float:right;width:31px;height:31px;display:grid;place-items:center;border-radius:9px;background:#f1edff;color:var(--purple)}
+.summary-icon svg{width:15px}
+.product-info{display:flex;align-items:center;gap:10px}
+.product-info img{width:42px;height:47px;object-fit:cover;border-radius:7px;background:#f2f0ec}
+.product-info strong{display:block;color:#4c4b63;font-size:10px}
+.product-info small{display:block;color:#a4a3b3;font-size:9px;margin-top:4px}
+.stock-indicator{display:flex;align-items:center;gap:7px}
+.stock-track{width:54px;height:5px;background:#f0eef5;border-radius:9px;overflow:hidden}
+.stock-track span{height:100%;display:block;border-radius:9px;background:#7a5be7;transition:width .3s}
+.stock-track.low span{background:#e7a449}.stock-track.out span{background:#e76f8c}
+.stock-number{font-weight:800;color:#57566e}
+.inline-tip{display:flex;gap:10px;align-items:flex-start;background:#f1edff;border:1px solid #e6ddff;border-radius:12px;padding:14px 16px;margin-top:16px;color:#77718f;font-size:10px;line-height:1.6}
+.inline-tip svg{width:17px;height:17px;color:var(--purple);flex-shrink:0}.inline-tip strong{color:#5d4a9c}
+.report-stats{margin-bottom:18px}
+.report-panel{padding:21px}
+.report-chart-wrap{height:330px}
+.settings-panel{padding:4px 22px}
+.settings-row{display:flex;align-items:center;gap:14px;padding:20px 0;border-bottom:1px solid var(--line)}
+.settings-row:last-child{border:0}
+.settings-symbol{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#f2eeff;color:var(--purple)}
+.settings-symbol svg{width:18px}
+.settings-row>div:nth-child(2){flex:1}
+.settings-row h3{font:700 12px Manrope,sans-serif;margin:0 0 5px}
+.settings-row p{margin:0;color:#9493a7;font-size:10px;line-height:1.5}
+.settings-tag{font-size:9px;font-weight:800;color:#77748e;background:#f2f1f7;padding:6px 8px;border-radius:6px}
+.green-tag{background:#e8f8f1;color:#198d68}
+.overlay{position:fixed;inset:0;background:rgba(31,27,54,.28);backdrop-filter:blur(3px);z-index:50;display:none;opacity:0;transition:opacity .2s}
+.overlay.show{display:block;opacity:1}
+.modal{position:fixed;z-index:51;top:50%;left:50%;transform:translate(-50%,-47%) scale(.98);opacity:0;pointer-events:none;width:min(560px,calc(100% - 28px));max-height:88vh;overflow:auto;background:#fff;border:1px solid #ece9f5;border-radius:18px;box-shadow:0 25px 80px #21183c25;padding:23px;transition:.2s}
+.modal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.modal-kicker{font-size:8px;letter-spacing:1.4px;color:#a29bb9;font-weight:800}
+.modal-head h2{font:800 19px Manrope,sans-serif;letter-spacing:-.6px;margin:6px 0 0}
+.modal-section{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:13px}
+.modal-section h3{font:800 11px Manrope,sans-serif;margin:0 0 12px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail-field small{display:block;color:#a09fb0;font-size:9px;margin-bottom:5px}
+.detail-field strong{display:block;font-size:11px;color:#4c4b63}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.payment-breakdown{display:grid;gap:10px}
+.payment-line{display:flex;justify-content:space-between;gap:15px;font-size:10px;color:#8d8ba0}
+.payment-line strong{color:#4c4b63}
+.payment-line.balance strong{color:#c45b78}
+.payment-progress{height:7px;background:#f0edf7;border-radius:8px;overflow:hidden;margin-top:4px}
+.payment-progress span{display:block;height:100%;background:linear-gradient(90deg,#a18af5,#7650e4);border-radius:8px;transition:width .35s}
+.modal-form{display:grid;gap:12px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-field label{display:block;font-size:10px;font-weight:700;color:#65647c;margin-bottom:6px}
+.form-field input,.form-field select,.form-field textarea{width:100%;border:1px solid #e7e5ef;border-radius:8px;padding:10px 11px;outline:0;background:#fff;color:#4c4b63;font-size:11px}
+.form-field input:focus,.form-field select:focus{border-color:#b7a5ff;box-shadow:0 0 0 3px #f1edff}
+.form-note{font-size:9px;color:#a09fb0;line-height:1.5}
+.toast-region{position:fixed;right:22px;bottom:22px;z-index:100;display:grid;gap:8px}
+.toast{display:flex;align-items:center;gap:10px;max-width:min(370px,calc(100vw - 32px));padding:13px 16px;border:1px solid #e8e5f1;border-radius:11px;background:white;box-shadow:0 10px 35px #28203c1a;font-size:11px;color:#56546c;animation:toastIn .2s ease}
+.toast svg{width:16px;height:16px;color:#159b70;flex-shrink:0}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.empty-state{text-align:center;padding:32px 15px;color:#a09fb0;font-size:11px}
+.empty-state svg{display:block;margin:0 auto 10px;width:24px;height:24px;color:#b1a4e7}
+.quick-paid{background:#e8f8f1!important;border-color:#c7eedf!important;color:#13875f!important}
+.quick-paid:hover{background:#d8f4e8!important}
+.danger-text{color:#c45b78!important}
+@media(min-width:1500px){.page-wrap{padding-left:46px;padding-right:46px}.topbar{padding-left:46px;padding-right:46px}.stats-grid{gap:18px}.stat-card{padding:21px}.chart-wrap{height:230px}}
+@media(max-width:1200px){.sidebar{width:218px}.main-content{margin-left:218px}.page-wrap{padding:28px 24px 35px}.topbar{padding:0 24px}.stats-grid{gap:10px}.stat-card{padding:15px}.stat-value{font-size:21px}.overview-grid,.lower-grid{grid-template-columns:minmax(0,1.45fr) minmax(245px,1fr)}.best-sellers{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}.global-search{width:220px}}
+@media(max-width:950px){.sidebar{transform:translateX(-100%);transition:transform .25s;box-shadow:15px 0 45px #17102a12}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.mobile-menu{display:inline-grid;margin-right:12px}.topbar{justify-content:flex-start;gap:0}.breadcrumb{flex:1}.topbar-actions{gap:8px}.global-search{width:min(240px,34vw)}.page-wrap{padding:25px 22px 32px}.overview-grid,.lower-grid{grid-template-columns:1fr}.fulfilment-panel{min-height:0}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.attention-list{grid-template-columns:repeat(2,minmax(0,1fr))}.app-footer{padding:16px 22px}}
+@media(max-width:620px){.topbar{height:62px;padding:0 14px}.breadcrumb{font-size:10px;gap:5px}.global-search{width:34px;padding:0;justify-content:center;border:0;background:transparent}.global-search input,.global-search kbd{display:none}.global-search svg{width:18px;height:18px}.topbar-actions{gap:6px}.top-avatar{display:none}.page-wrap{padding:22px 13px 28px}.page-heading{display:block;margin-bottom:20px}.page-heading h1{font-size:24px}.heading-actions{margin-top:17px;display:flex}.heading-actions .button{flex:1;padding:10px 9px}.stats-grid{gap:9px}.stat-card{padding:13px 12px 12px;border-radius:13px}.stat-top{font-size:10px;gap:5px}.stat-icon{width:28px;height:28px}.stat-value{font-size:19px;margin:14px 0 9px}.stat-foot{font-size:8px;gap:4px;flex-wrap:wrap}.stat-spark{width:36%;padding-right:8px}.panel{border-radius:14px}.revenue-panel,.fulfilment-panel,.products-panel,.report-panel{padding:16px}.panel-heading h2{font-size:13px}.panel-heading p{font-size:9px}.segmented-control button{padding:6px 7px;font-size:8px}.revenue-summary{margin-top:19px;gap:7px;flex-wrap:wrap}.revenue-summary strong{font-size:22px}.revenue-summary small{width:100%}.chart-wrap{height:190px}.fulfilment-total{margin-top:22px}.orders-panel,.attention-panel{padding-top:16px}.orders-panel>.panel-heading,.attention-panel>.panel-heading{padding:0 14px 14px}.orders-panel table th:first-child,.orders-panel table td:first-child{padding-left:14px}.table-toolbar{padding:13px;align-items:flex-start;flex-direction:column}.table-search{width:100%}.filter-tabs{width:100%;gap:3px}.filter-tabs button{padding:7px 8px;font-size:9px}.attention-list{padding:0 12px 13px;grid-template-columns:1fr}.best-sellers{grid-template-columns:1fr 1fr;gap:15px 9px}.seller-image{width:43px;height:50px}.seller-copy strong{font-size:9px}.seller-copy small{font-size:8px}.seller-copy b{font-size:9px}.inventory-summary,.payment-summary,.customer-stats{gap:8px}.summary-card{padding:13px 11px}.summary-card strong{font-size:18px}.summary-card span{font-size:9px}.summary-card small{font-size:8px}.summary-card .summary-icon{display:none}.full-table th,.full-table td{padding:12px 11px}.app-footer{padding:15px 13px;gap:15px;font-size:7px}.app-footer>span:last-child{text-align:right}.modal{padding:18px}.form-grid{grid-template-columns:1fr}.modal-actions .button{flex:1}.report-chart-wrap{height:250px}.settings-panel{padding:4px 14px}.settings-row{gap:10px;flex-wrap:wrap}.settings-row>div:nth-child(2){min-width:calc(100% - 60px)}.settings-row .settings-tag,.settings-row .button{margin-left:50px}.notification-button{width:31px;height:31px}.mobile-menu{margin-right:8px;width:31px;height:31px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Maison home">
+        <span class="brand-mark">M</span>
+        <span><strong>maison</strong><small>BUSINESS STUDIO</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><i data-lucide="layout-dashboard"></i><span>Overview</span></button>
+        <button class="nav-item" data-view="orders"><i data-lucide="shopping-bag"></i><span>Orders</span><span class="nav-count" id="openOrdersCount">8</span></button>
+        <button class="nav-item" data-view="inventory"><i data-lucide="package"></i><span>Inventory</span></button>
+        <button class="nav-item" data-view="customers"><i data-lucide="users"></i><span>Customers</span></button>
+        <button class="nav-item" data-view="payments"><i data-lucide="wallet"></i><span>Payments</span></button>
+        <button class="nav-item" data-view="reports"><i data-lucide="chart-no-axes-combined"></i><span>Reports</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <span class="help-icon"><i data-lucide="sparkles"></i></span>
+          <strong>Less admin. More growth.</strong>
+          <p>Keep orders, payments and stock in one calm workspace.</p>
+          <button id="helpButton">Explore workspace <i data-lucide="arrow-up-right"></i></button>
+        </div>
+        <button class="nav-item" data-view="settings"><i data-lucide="settings-2"></i><span>Settings</span></button>
+        <div class="user-profile">
+          <div class="avatar">AM</div>
+          <div class="user-copy"><strong>A M.</strong><small>Store owner</small></div>
+          <button class="icon-button more-button" aria-label="Profile options"><i data-lucide="ellipsis"></i></button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open navigation"><i data-lucide="menu"></i></button>
+        <div class="breadcrumb"><span>Workspace</span><i data-lucide="chevron-right"></i><strong id="breadcrumbCurrent">Overview</strong></div>
+        <div class="topbar-actions">
+          <label class="global-search"><i data-lucide="search"></i><input id="globalSearch" type="search" placeholder="Search orders, customers..." aria-label="Search dashboard"><kbd>⌘ K</kbd></label>
+          <button class="icon-button notification-button" id="notificationButton" aria-label="Notifications"><i data-lucide="bell"></i><span class="notification-dot"></span></button>
+          <div class="top-avatar">AM</div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <section class="view active" id="view-overview">
+          <div class="page-heading">
+            <div><div class="eyebrow"><span class="live-dot"></span> MONDAY, OCTOBER 12, 2026</div><h1>Good morning, A. <span class="wave">✦</span></h1><p>Here’s what’s happening with your store today.</p></div>
+            <div class="heading-actions"><button class="button button-secondary" id="exportOverview"><i data-lucide="download"></i> Export report</button><button class="button button-primary" id="newOrderButton"><i data-lucide="plus"></i> Add order</button></div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-top"><span>Total revenue</span><span class="stat-icon purple"><i data-lucide="wallet"></i></span></div><div class="stat-value" id="totalRevenue">₦1,284,500</div><div class="stat-foot"><span class="trend positive"><i data-lucide="trending-up"></i> 12.8%</span><span>vs. last month</span></div><div class="stat-spark spark-purple"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Orders received</span><span class="stat-icon blue"><i data-lucide="shopping-bag"></i></span></div><div class="stat-value" id="totalOrders">128</div><div class="stat-foot"><span class="trend positive"><i data-lucide="trending-up"></i> 8.4%</span><span>vs. last month</span></div><div class="stat-spark spark-blue"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Awaiting payment</span><span class="stat-icon amber"><i data-lucide="clock-3"></i></span></div><div class="stat-value" id="awaitingPayment">₦186,000</div><div class="stat-foot"><span class="trend neutral" id="awaitingCount">12 customers</span><span>need follow-up</span></div><div class="stat-spark spark-amber"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Low stock items</span><span class="stat-icon rose"><i data-lucide="package-alert"></i></span></div><div class="stat-value" id="lowStockCount">4</div><div class="stat-foot"><span class="trend warning">Restock soon</span><span>across 2 collections</span></div><div class="stat-spark spark-rose"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+          </div>
+
+          <div class="overview-grid">
+            <section class="panel revenue-panel">
+              <div class="panel-heading"><div><h2>Revenue overview</h2><p>Track the money coming into your business.</p></div><div class="segmented-control" id="chartRange"><button class="selected" data-range="7">7 days</button><button data-range="30">30 days</button><button data-range="90">90 days</button></div></div>
+              <div class="revenue-summary"><strong id="chartRevenue">₦426,800</strong><span class="trend positive"><i data-lucide="trending-up"></i> 18.6%</span><small>compared to previous period</small></div>
+              <div class="chart-wrap"><canvas id="revenueChart" aria-label="Revenue chart" role="img"></canvas></div>
+              <div class="chart-foot"><span><span class="legend-dot"></span> Revenue collected</span><span>Updated just now</span></div>
+            </section>
+            <section class="panel fulfilment-panel">
+              <div class="panel-heading"><div><h2>Order fulfilment</h2><p>Know what needs your attention.</p></div><button class="icon-button" data-go="orders" aria-label="View orders"><i data-lucide="arrow-up-right"></i></button></div>
+              <div class="fulfilment-total"><strong id="fulfilmentTotal">128</strong><span>orders this month</span></div>
+              <div class="fulfilment-bar" id="fulfilmentBar"><span class="bar-delivered" style="width:62%"></span><span class="bar-processing" style="width:23%"></span><span class="bar-pending" style="width:15%"></span></div>
+              <div class="fulfilment-legend"><div><span class="legend-square delivered"></span><span>Delivered</span><strong id="legendDelivered">79</strong></div><div><span class="legend-square processing"></span><span>Processing / ready</span><strong id="legendProcessing">29</strong></div><div><span class="legend-square pending"></span><span>Pending</span><strong id="legendPending">20</strong></div></div>
+              <div class="fulfilment-note"><i data-lucide="info"></i><span><strong id="dispatchNote">8 orders</strong> are ready for dispatch today.</span></div>
+            </section>
+          </div>
+
+          <div class="lower-grid">
+            <section class="panel orders-panel">
+              <div class="panel-heading"><div><h2>Recent orders</h2><p>Your latest customer activity.</p></div><button class="text-button" data-go="orders">View all orders <i data-lucide="arrow-right"></i></button></div>
+              <div class="table-scroll"><table><thead><tr><th>ORDER</th><th>CUSTOMER</th><th>ITEM</th><th>PAYMENT</th><th>STATUS</th><th></th></tr></thead><tbody id="recentOrdersBody"></tbody></table></div>
+            </section>
+            <section class="panel attention-panel">
+              <div class="panel-heading"><div><h2>Needs your attention</h2><p>A few things to take care of.</p></div><span class="attention-count" id="attentionCount">4</span></div>
+              <div class="attention-list" id="attentionList"></div>
+            </section>
+          </div>
+          <section class="panel products-panel">
+            <div class="panel-heading"><div><h2>Best-selling pieces</h2><p>Your top performers this month.</p></div><button class="text-button" data-go="inventory">Manage inventory <i data-lucide="arrow-right"></i></button></div>
+            <div class="best-sellers" id="bestSellers"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-orders">
+          <div class="page-heading"><div><div class="eyebrow">STORE MANAGEMENT</div><h1>Orders</h1><p>Every order, payment and delivery in one place.</p></div><div class="heading-actions"><button class="button button-secondary" id="exportOrders"><i data-lucide="download"></i> Export CSV</button><button class="button button-primary" id="ordersAddButton"><i data-lucide="plus"></i> Add order</button></div></div>
+          <section class="panel"><div class="table-toolbar"><div class="filter-tabs" id="orderFilters"><button class="selected" data-filter="all">All orders <span id="allOrderCount">8</span></button><button data-filter="Processing">Processing</button><button data-filter="Ready to ship">Ready to ship</button><button data-filter="Delivered">Delivered</button></div><label class="table-search"><i data-lucide="search"></i><input id="orderSearch" placeholder="Search orders..." type="search"></label></div><div class="table-scroll"><table class="full-table"><thead><tr><th>ORDER ID</th><th>CUSTOMER</th><th>ITEM</th><th>ORDER DATE</th><th>AMOUNT</th><th>PAYMENT</th><th>FULFILMENT</th><th>ACTION</th></tr></thead><tbody id="ordersTableBody"></tbody></table></div></section>
+        </section>
+
+        <section class="view" id="view-inventory">
+          <div class="page-heading"><div><div class="eyebrow">STORE MANAGEMENT</div><h1>Inventory</h1><p>Keep sizes, colours and stock levels under control.</p></div><div class="heading-actions"><button class="button button-secondary" id="exportInventory"><i data-lucide="download"></i> Export stock</button><button class="button button-primary" id="addProductButton"><i data-lucide="plus"></i> Add product</button></div></div>
+          <div class="inventory-summary" id="inventorySummary"></div>
+          <section class="panel"><div class="table-toolbar"><div><h2 class="toolbar-title">All products</h2><p class="toolbar-subtitle">Stock is updated as orders are processed.</p></div><label class="table-search"><i data-lucide="search"></i><input id="inventorySearch" placeholder="Find a product..." type="search"></label></div><div class="table-scroll"><table class="full-table"><thead><tr><th>PRODUCT</th><th>SKU</th><th>CATEGORY</th><th>PRICE</th><th>STOCK</th><th>STOCK STATUS</th><th></th></tr></thead><tbody id="inventoryTableBody"></tbody></table></div></section>
+        </section>
+
+        <section class="view" id="view-customers">
+          <div class="page-heading"><div><div class="eyebrow">CUSTOMER RELATIONSHIPS</div><h1>Customers</h1><p>Remember who's buying, what they love and what they owe.</p></div><div class="heading-actions"><button class="button button-secondary" id="exportCustomers"><i data-lucide="download"></i> Export customers</button><button class="button button-primary" id="addCustomerButton"><i data-lucide="plus"></i> Add customer</button></div></div>
+          <div class="customer-stats" id="customerStats"></div>
+          <section class="panel"><div class="table-toolbar"><div><h2 class="toolbar-title">Customer directory</h2><p class="toolbar-subtitle">Purchase history and quick contact access.</p></div><label class="table-search"><i data-lucide="search"></i><input id="customerSearch" placeholder="Search customers..." type="search"></label></div><div class="table-scroll"><table class="full-table"><thead><tr><th>CUSTOMER</th><th>PHONE</th><th>ORDERS</th><th>TOTAL SPENT</th><th>OUTSTANDING</th><th>LAST ORDER</th><th>CONTACT</th></tr></thead><tbody id="customersTableBody"></tbody></table></div></section>
+        </section>
+
+        <section class="view" id="view-payments">
+          <div class="page-heading"><div><div class="eyebrow">MONEY MANAGEMENT</div><h1>Payments</h1><p>See what's paid, what's partial and who needs a reminder.</p></div><div class="heading-actions"><button class="button button-secondary" id="exportPayments"><i data-lucide="download"></i> Export CSV</button></div></div>
+          <div class="payment-summary" id="paymentSummary"></div>
+          <section class="panel"><div class="table-toolbar"><div class="filter-tabs" id="paymentFilters"><button class="selected" data-filter="all">All payments</button><button data-filter="Paid">Paid</button><button data-filter="Partially paid">Partially paid</button><button data-filter="Pending">Pending</button></div><label class="table-search"><i data-lucide="search"></i><input id="paymentSearch" placeholder="Search customer or order..." type="search"></label></div><div class="table-scroll"><table class="full-table"><thead><tr><th>ORDER</th><th>CUSTOMER</th><th>ORDER TOTAL</th><th>PAID</th><th>BALANCE</th><th>PAYMENT STATUS</th><th>ACTION</th></tr></thead><tbody id="paymentsTableBody"></tbody></table></div></section>
+          <div class="inline-tip"><i data-lucide="shield-check"></i><span><strong>Keep your records clear.</strong> “Mark as paid” updates this demo’s record only. Always confirm the transfer in your bank or payment app before marking an order fully paid.</span></div>
+        </section>
+
+        <section class="view" id="view-reports">
+          <div class="page-heading"><div><div class="eyebrow">BUSINESS INSIGHTS</div><h1>Reports</h1><p>A clearer picture of sales, stock and outstanding payments.</p></div><div class="heading-actions"><button class="button button-primary" id="exportFullReport"><i data-lucide="download"></i> Download report</button></div></div>
+          <div class="stats-grid report-stats" id="reportStats"></div>
+          <section class="panel report-panel"><div class="panel-heading"><div><h2>Revenue performance</h2><p>Collected revenue across the selected period.</p></div><div class="segmented-control" id="reportRange"><button class="selected" data-range="7">7 days</button><button data-range="30">30 days</button><button data-range="90">90 days</button></div></div><div class="chart-wrap report-chart-wrap"><canvas id="reportChart" aria-label="Report revenue chart" role="img"></canvas></div></section>
+        </section>
+
+        <section class="view" id="view-settings">
+          <div class="page-heading"><div><div class="eyebrow">YOUR WORKSPACE</div><h1>Settings</h1><p>Customise the way your store workspace feels.</p></div></div>
+          <section class="panel settings-panel"><div class="settings-row"><div class="settings-symbol"><i data-lucide="store"></i></div><div><h3>Store profile</h3><p>Maison Studio · Clothing & accessories</p></div><span class="settings-tag">Demo profile</span></div><div class="settings-row"><div class="settings-symbol"><i data-lucide="message-circle"></i></div><div><h3>WhatsApp-first workflow</h3><p>Use quick contact actions to follow up on orders and balances.</p></div><span class="settings-tag green-tag">Enabled</span></div><div class="settings-row"><div class="settings-symbol"><i data-lucide="database"></i></div><div><h3>Prototype data</h3><p>Changes are stored in this browser using local storage. No real orders or payments are sent.</p></div><button class="button button-secondary button-small" id="resetDemo">Reset demo data</button></div></section>
+        </section>
+      </div>
+      <footer class="app-footer"><span>MAISON BUSINESS STUDIO</span><span>Made for a calmer way to run your store <i data-lucide="heart"></i></span></footer>
+    </main>
+  </div>
+
+  <div class="overlay" id="modalOverlay"></div>
+  <section class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head"><div><span class="modal-kicker">ORDER WORKSPACE</span><h2 id="modalTitle">Order details</h2></div><button class="icon-button" data-close-modal aria-label="Close dialog"><i data-lucide="x"></i></button></div>
+    <div id="modalBody"></div>
+  </section>
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* ============ helpers ============ */
+const $ = (selector, root=document) => root.querySelector(selector);
+const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
+const money = n => '₦' + Math.round(Number(n)||0).toLocaleString('en-NG');
+const initials = name => {
+  if (typeof name !== 'string' || !name.trim()) return '??';
+  return name.trim().split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
+};
+const today = '12 Oct 2026';
+const refreshIcons = () => { if (window.lucide) try { lucide.createIcons(); } catch(e){} };
+
+/* ============ image set (Unsplash, stable IDs + built-in fallback) ============ */
+const imageSet = {
+  polo: 'https://images.unsplash.com/photo-1625910513413-5fc45e6f7a3d?auto=format&fit=crop&w=240&q=80',
+  shirt: 'https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=240&q=80',
+  trousers: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=240&q=80',
+  knit: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=240&q=80',
+  jacket: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=240&q=80',
+  bag: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=240&q=80'
+};
+const categoryImages = {
+  Polos:'polo', Shirts:'shirt', Trousers:'trousers', Knitwear:'knit',
+  Outerwear:'jacket', Accessories:'bag'
+};
+function imgSrc(key){ return imageSet[key] || imageSet.polo; }
+function imageTag(key, cls='', alt=''){
+  // Built-in clothing illustration keeps every product image working even if the network is down.
+  const fallback = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180"><rect width="160" height="180" rx="12" fill="#f2eff9"/><path d="M49 30 67 20 80 34 93 20 111 30 137 53 119 75 106 63 106 154 54 154 54 63 41 75 23 53Z" fill="#fff" stroke="#d7d0e9" stroke-width="2"/><path d="M67 20 80 34 93 20 88 43 80 51 72 43Z" fill="#e4def4" stroke="#d7d0e9" stroke-width="2"/><path d="M80 51V72" stroke="#c6bce0" stroke-width="2"/><circle cx="80" cy="60" r="1.8" fill="#a99bcf"/><circle cx="80" cy="67" r="1.8" fill="#a99bcf"/><text x="80" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="#9a8cbf">MAISON STUDIO</text></svg>`);
+  return `<img class="${cls}" src="${imgSrc(key)}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">`;
+}
+
+/* ============ data ============ */
+const seed = {
+  orders: [
+    {id:'MS-1084',name:'Tomi Adeyemi',phone:'0803 555 0182',product:'Premium United Polo',variant:'White · L',qty:1,total:19500,paid:19500,payment:'Paid',status:'Ready to ship',date:'12 Oct 2026',img:'polo'},
+    {id:'MS-1083',name:'Kelechi James',phone:'0812 440 9021',product:'Classic Oxford Shirt',variant:'Sky blue · M',qty:2,total:42000,paid:20000,payment:'Partially paid',status:'Processing',date:'12 Oct 2026',img:'shirt'},
+    {id:'MS-1082',name:'Zara Okafor',phone:'0706 311 2088',product:'Everyday Straight Trousers',variant:'Black · 32',qty:1,total:28000,paid:0,payment:'Pending',status:'Processing',date:'11 Oct 2026',img:'trousers'},
+    {id:'MS-1081',name:'Daniel Eze',phone:'0901 274 6610',product:'Premium United Polo',variant:'Black · XL',qty:3,total:58500,paid:58500,payment:'Paid',status:'Delivered',date:'11 Oct 2026',img:'polo'},
+    {id:'MS-1080',name:'Nneka Obi',phone:'0809 721 4430',product:'Soft Knit Crewneck',variant:'Cream · S',qty:1,total:32000,paid:15000,payment:'Partially paid',status:'Ready to ship',date:'10 Oct 2026',img:'knit'},
+    {id:'MS-1079',name:'Chidi Nwosu',phone:'0703 662 1944',product:'Everyday Straight Trousers',variant:'Stone · 34',qty:1,total:28000,paid:28000,payment:'Paid',status:'Delivered',date:'10 Oct 2026',img:'trousers'},
+    {id:'MS-1078',name:'Adaeze Umeh',phone:'0814 500 7812',product:'Minimal Weekender Bag',variant:'Espresso · One size',qty:1,total:35000,paid:0,payment:'Pending',status:'Processing',date:'09 Oct 2026',img:'bag'},
+    {id:'MS-1077',name:'Feyi Balogun',phone:'0802 889 1743',product:'Relaxed Utility Jacket',variant:'Olive · L',qty:1,total:46500,paid:46500,payment:'Paid',status:'Delivered',date:'08 Oct 2026',img:'jacket'}
+  ],
+  products: [
+    {id:'PR-001',name:'Premium United Polo',category:'Polos',price:19500,stock:4,sold:48,img:'polo',variants:'White / Black / Navy · XS–XXL'},
+    {id:'PR-002',name:'Classic Oxford Shirt',category:'Shirts',price:21000,stock:18,sold:36,img:'shirt',variants:'White / Sky blue · S–XXL'},
+    {id:'PR-003',name:'Everyday Straight Trousers',category:'Trousers',price:28000,stock:7,sold:29,img:'trousers',variants:'Black / Stone · 28–38'},
+    {id:'PR-004',name:'Soft Knit Crewneck',category:'Knitwear',price:32000,stock:12,sold:24,img:'knit',variants:'Cream / Charcoal · XS–XL'},
+    {id:'PR-005',name:'Relaxed Utility Jacket',category:'Outerwear',price:46500,stock:2,sold:17,img:'jacket',variants:'Olive / Black · S–XXL'},
+    {id:'PR-006',name:'Minimal Weekender Bag',category:'Accessories',price:35000,stock:0,sold:15,img:'bag',variants:'Espresso / Black · One size'}
+  ],
+  customers: [
+    {name:'Tomi Adeyemi',phone:'0803 555 0182',orders:6,spent:132000,last:'12 Oct 2026'},
+    {name:'Kelechi James',phone:'0812 440 9021',orders:3,spent:87500,last:'12 Oct 2026'},
+    {name:'Zara Okafor',phone:'0706 311 2088',orders:4,spent:106000,last:'11 Oct 2026'},
+    {name:'Daniel Eze',phone:'0901 274 6610',orders:8,spent:224500,last:'11 Oct 2026'},
+    {name:'Nneka Obi',phone:'0809 721 4430',orders:2,spent:47000,last:'10 Oct 2026'},
+    {name:'Chidi Nwosu',phone:'0703 662 1944',orders:5,spent:156000,last:'10 Oct 2026'},
+    {name:'Adaeze Umeh',phone:'0814 500 7812',orders:1,spent:35000,last:'09 Oct 2026'},
+    {name:'Feyi Balogun',phone:'0802 889 1743',orders:4,spent:138000,last:'08 Oct 2026'}
+  ]
+};
+/* Baseline figures for the demo store-wide stats (orders/payments beyond the editable list).
+   Stats are always recomputed against these, so edits and resets stay consistent. */
+const BASELINE = (() => {
+  const paid = seed.orders.reduce((s,o)=>s+o.paid,0);
+  const outstanding = seed.orders.reduce((s,o)=>s+Math.max(0,o.total-o.paid),0);
+  const open = seed.orders.filter(o=>!['Delivered','Cancelled'].includes(o.status)).length;
+  return { revenue:1284500, paidBase:paid, outstandingBase:outstanding, ordersBase:seed.orders.length, openBase:open, totalOrders:128, awaiting:186000 };
+})();
+
+let state = loadState();
+let activeOrderFilter = 'all', activePaymentFilter = 'all', chartRange = 7, revenueChart, reportChart;
+
+function loadState(){
+  try{
+    const saved = localStorage.getItem('maisonDashboardDemo');
+    if (saved){
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.orders && parsed.products && parsed.customers) return parsed;
+    }
+  }catch(e){ /* corrupted storage → fall through to seed */ }
+  return JSON.parse(JSON.stringify(seed));
+}
+function saveState(){
+  try{ localStorage.setItem('maisonDashboardDemo', JSON.stringify(state)); }catch(e){}
+}
+
+/* ============ status helpers ============ */
+function statusClass(status){
+  return ({'Paid':'status-paid','Delivered':'status-delivered','In stock':'status-in-stock',
+    'Partially paid':'status-partial','Processing':'status-processing','Low stock':'status-low-stock',
+    'Pending':'status-pending','Out of stock':'status-out-of-stock','Ready to ship':'status-ready',
+    'Cancelled':'status-cancelled'})[status] || 'status-pending';
+}
+function pill(status){ return `<span class="status-pill ${statusClass(status)}">${status}</span>`; }
+function balance(order){ return Math.max(0, order.total - order.paid); }
+function outstandingOrders(){ return state.orders.filter(o => balance(o) > 0 && o.status !== 'Cancelled'); }
+function customerByName(name){ return state.customers.find(c => c.name === name); }
+function nextOrderId(){
+  const max = state.orders.reduce((m,o)=>{ const n = parseInt(String(o.id).replace(/\D/g,''),10); return Number.isFinite(n) ? Math.max(m,n) : m; }, 1084);
+  return 'MS-' + (max + 1);
+}
+function nextProductId(){
+  const max = state.products.reduce((m,p)=>{ const n = parseInt(String(p.id).replace(/\D/g,''),10); return Number.isFinite(n) ? Math.max(m,n) : m; }, 0);
+  return 'PR-' + String(max + 1).padStart(3,'0');
+}
+
+/* ============ derived data + persistence ============ */
+function ensureCustomer(order){
+  let c = customerByName(order.name);
+  if (!c){
+    c = { name:order.name, phone:order.phone, orders:0, spent:0, last:order.date };
+    state.customers.unshift(c);
+  }
+  c.phone = order.phone;
+  const theirs = state.orders.filter(o => o.name === c.name);
+  c.orders = theirs.length;
+  c.spent = theirs.reduce((s,o) => s + o.paid, 0);
+  c.last = theirs.reduce((latest,o) => (o.date > latest ? o.date : latest), theirs[0]?.date || '—');
+}
+function updateDerived(){
+  state.orders.forEach(ensureCustomer);
+  saveState();
+}
+
+/* ============ navigation / feedback ============ */
+function openView(view){
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === `view-${view}`));
+  $$('.nav-item[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  $('#breadcrumbCurrent').textContent = view[0].toUpperCase() + view.slice(1);
+  $('#sidebar').classList.remove('open');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+function toast(message){
+  const node = document.createElement('div');
+  node.className = 'toast';
+  node.innerHTML = `<i data-lucide="check-circle-2"></i><span></span>`;
+  node.lastElementChild.textContent = message;
+  $('#toastRegion').append(node);
+  refreshIcons();
+  setTimeout(() => { node.style.opacity = '0'; node.style.transition = 'opacity .3s'; setTimeout(()=>node.remove(), 320); }, 3400);
+}
+function openModal(title, body){
+  $('#modalTitle').textContent = title;
+  $('#modalBody').innerHTML = body;
+  $('#modalOverlay').classList.add('show');
+  $('#detailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  refreshIcons();
+  const first = $('#modalBody input, #modalBody select, #modalBody button');
+  if (first) first.focus();
+}
+function closeModal(){
+  $('#modalOverlay').classList.remove('show');
+  $('#detailModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function whatsapp(phone, message){
+  const digits = String(phone).replace(/\D/g,'');
+  window.open(`https://wa.me/${digits}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+}
+
+/* ============ renderers ============ */
+function emptyRow(cols, message){ return `<tr><td colspan="${cols}"><div class="empty-state"><i data-lucide="inbox"></i>${message}</div></td></tr>`; }
+
+function orderRow(o, compact=false){
+  return `<tr>
+    <td><span class="order-id">${o.id}</span></td>
+    <td><div class="customer-cell"><span class="mini-avatar">${initials(o.name)}</span><span><strong>${o.name}</strong><small>${o.phone}</small></span></div></td>
+    <td><div class="product-cell">${imageTag(o.img,'product-thumb',o.product)}<span>${o.product}<small style="display:block;color:#aaa9b8;font-size:9px;margin-top:3px">${o.variant}</small></span></div></td>
+    ${compact ? '' : `<td>${o.date}</td>`}
+    <td>${money(o.total)}</td>
+    <td>${pill(o.payment)}</td>
+    ${compact
+      ? `<td>${pill(o.status)}</td><td><button class="row-action" data-order="${o.id}" aria-label="View ${o.id}"><i data-lucide="arrow-up-right"></i></button></td>`
+      : `<td>${pill(o.status)}</td><td><button class="row-action" data-order="${o.id}" aria-label="Manage ${o.id}"><i data-lucide="ellipsis"></i></button></td>`}
+  </tr>`;
+}
+function renderRecentOrders(){
+  $('#recentOrdersBody').innerHTML = state.orders.slice(0,5).map(o => orderRow(o,true)).join('') || emptyRow(6,'No orders yet');
+}
+function renderOrders(){
+  const q = ($('#orderSearch')?.value || '').toLowerCase().trim();
+  const rows = state.orders.filter(o =>
+    (activeOrderFilter === 'all' || o.status === activeOrderFilter) &&
+    [o.id, o.name, o.product, o.phone].some(v => String(v).toLowerCase().includes(q))
+  );
+  $('#ordersTableBody').innerHTML = rows.map(o => orderRow(o,false)).join('') || emptyRow(8,'No orders match your search.');
+  $('#allOrderCount').textContent = state.orders.length;
+  $('#openOrdersCount').textContent = state.orders.filter(o => !['Delivered','Cancelled'].includes(o.status)).length;
+}
+function renderInventory(){
+  const q = ($('#inventorySearch')?.value || '').toLowerCase().trim();
+  const low = state.products.filter(p => p.stock > 0 && p.stock <= 5).length;
+  const out = state.products.filter(p => p.stock === 0).length;
+  $('#inventorySummary').innerHTML = `
+    <div class="summary-card"><span>Total products</span><strong>${state.products.length}</strong><small>Across all collections</small></div>
+    <div class="summary-card"><span>Low stock</span><strong>${low}</strong><small>Restock before you run out</small></div>
+    <div class="summary-card"><span>Out of stock</span><strong>${out}</strong><small>Products unavailable to sell</small></div>`;
+  const rows = state.products.filter(p => `${p.name} ${p.category} ${p.id}`.toLowerCase().includes(q));
+  $('#inventoryTableBody').innerHTML = rows.map(p => {
+    const label = p.stock === 0 ? 'Out of stock' : p.stock <= 5 ? 'Low stock' : 'In stock';
+    return `<tr>
+      <td><div class="product-info">${imageTag(p.img,'',p.name)}<span><strong>${p.name}</strong><small>${p.variants}</small></span></div></td>
+      <td>${p.id}</td><td>${p.category}</td><td><strong>${money(p.price)}</strong></td>
+      <td><div class="stock-indicator"><span class="stock-number">${p.stock}</span><span class="stock-track ${p.stock===0?'out':p.stock<=5?'low':''}"><span style="width:${Math.min(100, p.stock/25*100)}%"></span></span></div></td>
+      <td>${pill(label)}</td>
+      <td><button class="row-action" data-product="${p.id}" aria-label="Edit ${p.name}"><i data-lucide="ellipsis"></i></button></td>
+    </tr>`;
+  }).join('') || emptyRow(7,'No products found.');
+}
+function renderCustomers(){
+  const q = ($('#customerSearch')?.value || '').toLowerCase().trim();
+  const customers = state.customers.filter(c => `${c.name} ${c.phone}`.toLowerCase().includes(q));
+  const outstanding = outstandingOrders().reduce((s,o) => s + balance(o), 0);
+  $('#customerStats').innerHTML = `
+    <div class="summary-card"><span>Total customers</span><strong>${state.customers.length}</strong><small>Saved customer contacts</small></div>
+    <div class="summary-card"><span>Repeat customers</span><strong>${state.customers.filter(c => c.orders > 1).length}</strong><small>Customers who came back</small></div>
+    <div class="summary-card"><span>Outstanding balances</span><strong>${money(outstanding)}</strong><small>Across unpaid orders</small></div>`;
+  $('#customersTableBody').innerHTML = customers.map(c => {
+    const owes = state.orders.filter(o => o.name === c.name).reduce((s,o) => s + balance(o), 0);
+    return `<tr>
+      <td><div class="customer-cell"><span class="mini-avatar">${initials(c.name)}</span><span><strong>${c.name}</strong><small>${c.orders} recorded orders</small></span></div></td>
+      <td>${c.phone}</td><td>${c.orders}</td><td><strong>${money(c.spent)}</strong></td>
+      <td><strong style="color:${owes ? '#c45b78' : '#169b70'}">${money(owes)}</strong></td>
+      <td>${c.last || '—'}</td>
+      <td><button class="button button-secondary button-small" data-whatsapp="${c.phone}" data-customer="${c.name}"><i data-lucide="message-circle"></i> WhatsApp</button></td>
+    </tr>`;
+  }).join('') || emptyRow(7,'No customers found.');
+}
+function renderPayments(){
+  const q = ($('#paymentSearch')?.value || '').toLowerCase().trim();
+  const rows = state.orders.filter(o =>
+    (activePaymentFilter === 'all' || o.payment === activePaymentFilter) &&
+    `${o.id} ${o.name} ${o.phone}`.toLowerCase().includes(q)
+  );
+  const outstanding = outstandingOrders().reduce((s,o) => s + balance(o), 0);
+  const paid = state.orders.reduce((s,o) => s + o.paid, 0);
+  const partial = state.orders.filter(o => o.payment === 'Partially paid').length;
+  $('#paymentSummary').innerHTML = `
+    <div class="summary-card"><span>Collected in these orders</span><strong>${money(paid)}</strong><small>Recorded payments</small></div>
+    <div class="summary-card"><span>Outstanding balance</span><strong>${money(outstanding)}</strong><small>Amount still to collect</small></div>
+    <div class="summary-card"><span>Partial payments</span><strong>${partial}</strong><small>Orders with a remaining balance</small></div>`;
+  $('#paymentsTableBody').innerHTML = rows.map(o => `<tr>
+    <td><span class="order-id">${o.id}</span><small style="display:block;color:#a3a2b3;font-size:9px;margin-top:4px">${o.date}</small></td>
+    <td><div class="customer-cell"><span class="mini-avatar">${initials(o.name)}</span><span><strong>${o.name}</strong><small>${o.phone}</small></span></div></td>
+    <td>${money(o.total)}</td><td><strong>${money(o.paid)}</strong></td>
+    <td><strong style="color:${balance(o) ? '#c45b78' : '#169b70'}">${money(balance(o))}</strong></td>
+    <td>${pill(o.payment)}</td>
+    <td><div style="display:flex;gap:6px">
+      ${balance(o) > 0
+        ? `<button class="button button-secondary button-small" data-payment="${o.id}">Record</button>
+           <button class="button button-secondary button-small quick-paid" data-mark-paid="${o.id}" title="Mark fully paid"><i data-lucide="check"></i> Paid</button>`
+        : `<button class="button button-secondary button-small" data-order="${o.id}">View</button>`}
+    </div></td>
+  </tr>`).join('') || emptyRow(7,'No payment records match your search.');
+}
+function renderAttention(){
+  const partial = outstandingOrders().filter(o => o.paid > 0).length;
+  const pending = outstandingOrders().filter(o => o.paid === 0).length;
+  const low = state.products.filter(p => p.stock <= 5).length;
+  const items = [
+    { icon:'wallet', tone:'rose', title:`${pending} payment${pending===1?'':'s'} pending`, desc:'Follow up with customers who have not paid.', action:'Review', go:'payments' },
+    { icon:'clock-3', tone:'amber', title:`${partial} partial payment${partial===1?'':'s'}`, desc:'Keep an eye on the remaining balances.', action:'View balances', go:'payments' },
+    { icon:'package', tone:'purple', title:`${low} low or out-of-stock items`, desc:'Restock popular pieces before demand rises.', action:'Check stock', go:'inventory' }
+  ].filter(i => !i.title.startsWith('0 '));
+  $('#attentionList').innerHTML = items.map(i => `<div class="attention-item"><span class="attention-icon ${i.tone}"><i data-lucide="${i.icon}"></i></span><div class="attention-copy"><strong>${i.title}</strong><p>${i.desc}</p></div><button data-go="${i.go}">${i.action}</button></div>`).join('') || `<div class="empty-state"><i data-lucide="check-circle-2"></i>Everything is under control. Nice work.</div>`;
+  $('#attentionCount').textContent = items.length;
+}
+function renderBestSellers(){
+  const best = [...state.products].sort((a,b) => b.sold - a.sold).slice(0,4);
+  $('#bestSellers').innerHTML = best.map(p => `<div class="seller-card">${imageTag(p.img,'seller-image',p.name)}<div class="seller-copy"><strong>${p.name}</strong><small>${p.sold} pieces sold</small><b>${money(p.price)}</b></div></div>`).join('');
+}
+function renderStats(){
+  const paid = state.orders.reduce((s,o) => s + o.paid, 0);
+  const outstanding = outstandingOrders().reduce((s,o) => s + balance(o), 0);
+  // Consistent with the demo baseline — works after edits AND after reset.
+  $('#totalRevenue').textContent = money(BASELINE.revenue + paid - BASELINE.paidBase);
+  $('#totalOrders').textContent = BASELINE.totalOrders + state.orders.length - BASELINE.ordersBase;
+  $('#awaitingPayment').textContent = money(BASELINE.awaiting + outstanding - BASELINE.outstandingBase);
+  const oweCount = outstandingOrders().length;
+  $('#awaitingCount').textContent = `${oweCount} customer${oweCount===1?'':'s'}`;
+  $('#lowStockCount').textContent = state.products.filter(p => p.stock <= 5).length;
+  $('#fulfilmentTotal').textContent = BASELINE.totalOrders + state.orders.length - BASELINE.ordersBase;
+  // Fulfilment bar now reflects the real order list instead of hardcoded 62/23/15.
+  const total = state.orders.length || 1;
+  const delivered = state.orders.filter(o => o.status === 'Delivered').length;
+  const processing = state.orders.filter(o => o.status === 'Processing' || o.status === 'Ready to ship').length;
+  const pend = state.orders.filter(o => o.status === 'Pending' || o.status === 'Cancelled').length;
+  $('#legendDelivered').textContent = BASELINE.openBase >= 0 ? delivered : delivered;
+  $('#legendProcessing').textContent = processing;
+  $('#legendPending').textContent = pend;
+  $('#fulfilmentBar').innerHTML = `<span class="bar-delivered" style="width:${delivered/total*100}%"></span><span class="bar-processing" style="width:${processing/total*100}%"></span><span class="bar-pending" style="width:${pend/total*100}%"></span>`;
+  const ready = state.orders.filter(o => o.status === 'Ready to ship').length;
+  $('#dispatchNote').textContent = `${ready} order${ready===1?'':'s'}`;
+}
+function renderReportStats(){
+  const paid = state.orders.reduce((s,o) => s + o.paid, 0);
+  const outstanding = outstandingOrders().reduce((s,o) => s + balance(o), 0);
+  $('#reportStats').innerHTML = `
+    <article class="stat-card"><div class="stat-top"><span>Recorded revenue</span><span class="stat-icon purple"><i data-lucide="wallet"></i></span></div><div class="stat-value">${money(paid)}</div><div class="stat-foot">Across visible demo orders</div></article>
+    <article class="stat-card"><div class="stat-top"><span>Outstanding</span><span class="stat-icon rose"><i data-lucide="clock-3"></i></span></div><div class="stat-value">${money(outstanding)}</div><div class="stat-foot">Balances yet to be collected</div></article>
+    <article class="stat-card"><div class="stat-top"><span>Average order value</span><span class="stat-icon blue"><i data-lucide="shopping-bag"></i></span></div><div class="stat-value">${money(state.orders.length ? state.orders.reduce((s,o) => s + o.total, 0) / state.orders.length : 0)}</div><div class="stat-foot">Per order in demo dataset</div></article>
+    <article class="stat-card"><div class="stat-top"><span>Stock items at risk</span><span class="stat-icon amber"><i data-lucide="package"></i></span></div><div class="stat-value">${state.products.filter(p => p.stock <= 5).length}</div><div class="stat-foot">Low stock or unavailable</div></article>`;
+}
+
+/* ============ charts ============ */
+function buildRevenueData(days){
+  const labels = [], data = [];
+  const now = new Date(2026, 9, 12);
+  const week = [28000, 46000, 34000, 62000, 48000, 71000, 85000];
+  for (let i = days - 1; i >= 0; i--){
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    labels.push(
+      days === 7 ? d.toLocaleDateString('en', { weekday:'short' })
+      : days === 30 ? d.toLocaleDateString('en', { day:'numeric', month:'short' })
+      : d.toLocaleDateString('en', { month:'short', day:'numeric' })
+    );
+    const base = days === 7
+      ? (week[6 - i] ?? 38000)
+      : Math.round(30000 + Math.abs(Math.sin(i * .42) * 28000) + Math.abs(Math.cos(i * .18) * 18000));
+    data.push(Math.round(base + (i % 5) * 2200));
+  }
+  return { labels, data };
+}
+function chartConfig(canvas, days){
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.clientHeight || 250);
+  grad.addColorStop(0, 'rgba(121,85,232,0.34)');
+  grad.addColorStop(.45, 'rgba(121,85,232,0.13)');
+  grad.addColorStop(1, 'rgba(121,85,232,0.00)');
+  const dataset = buildRevenueData(days);
+  return {
+    type: 'line',
+    data: { labels: dataset.labels, datasets: [{
+      label: 'Revenue', data: dataset.data,
+      borderColor: '#7955e8', borderWidth: 2.4, backgroundColor: grad, fill: true,
+      tension: .42, pointRadius: 0, pointHoverRadius: 5,
+      pointHoverBackgroundColor: '#7955e8', pointHoverBorderColor: '#fff', pointHoverBorderWidth: 3
+    }]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { display: false },
+        tooltip: { backgroundColor: '#29243c', padding: 11, displayColors: false,
+          titleFont: { family: 'DM Sans', size: 10 }, bodyFont: { family: 'DM Sans', size: 11 },
+          callbacks: { label: ctx => money(ctx.raw) } }
+      },
+      scales: {
+        x: { grid: { display: false, drawBorder: false }, border: { display: false },
+             ticks: { color: '#aaa9b9', font: { family: 'DM Sans', size: 9 }, maxTicksLimit: days === 90 ? 7 : days === 30 ? 8 : 7, maxRotation: 0 } },
+        y: { beginAtZero: true, grid: { color: '#f0eff6', drawBorder: false }, border: { display: false, dash: [3,4] },
+             ticks: { color: '#aaa9b9', font: { family: 'DM Sans', size: 9 }, maxTicksLimit: 5, padding: 9,
+                      callback: value => value >= 1000 ? `₦${Math.round(value/1000)}k` : value } }
+      }
+    }
+  };
+}
+function initChart(canvasId, days, which){
+  if (!window.Chart) return; // graceful: charts just don't render if CDN is unreachable
+  const canvas = $(`#${canvasId}`);
+  if (!canvas) return;
+  const existing = which === 'main' ? revenueChart : reportChart;
+  if (existing) existing.destroy();
+  const chart = new Chart(canvas, chartConfig(canvas, days));
+  if (which === 'main'){ revenueChart = chart; $('#chartRevenue').textContent = money(buildRevenueData(days).data.reduce((s,n) => s + n, 0)); }
+  else reportChart = chart;
+}
+
+/* ============ master render ============ */
+function renderAll(){
+  updateDerived();
+  renderStats();
+  renderRecentOrders();
+  renderOrders();
+  renderInventory();
+  renderCustomers();
+  renderPayments();
+  renderAttention();
+  renderBestSellers();
+  renderReportStats();
+  refreshIcons();
+  initChart('revenueChart', chartRange, 'main');
+  initChart('reportChart', 30, 'report');
+}
+
+/* ============ modals ============ */
+function orderDetail(id){
+  const o = state.orders.find(x => x.id === id);
+  if (!o) return;
+  const pct = o.total ? Math.min(100, o.paid / o.total * 100) : 0;
+  openModal(`${o.id} · ${o.name}`, `
+    <div class="modal-section"><div class="detail-grid">
+      <div class="detail-field"><small>Customer</small><strong>${o.name}</strong></div>
+      <div class="detail-field"><small>Phone number</small><strong>${o.phone}</strong></div>
+      <div class="detail-field"><small>Product</small><strong>${o.product}</strong></div>
+      <div class="detail-field"><small>Size / colour</small><strong>${o.variant}</strong></div>
+      <div class="detail-field"><small>Order date</small><strong>${o.date}</strong></div>
+      <div class="detail-field"><small>Fulfilment</small><strong>${o.status}</strong></div>
+    </div></div>
+    <div class="modal-section"><h3>Payment overview</h3>
+      <div class="payment-breakdown">
+        <div class="payment-line"><span>Order total</span><strong>${money(o.total)}</strong></div>
+        <div class="payment-line"><span>Amount received</span><strong>${money(o.paid)}</strong></div>
+        <div class="payment-progress"><span style="width:${pct}%"></span></div>
+        <div class="payment-line balance"><span>Balance remaining</span><strong>${money(balance(o))}</strong></div>
+        <div>${pill(o.payment)}</div>
+        ${o.paymentMethod ? `<div class="payment-line"><span>Last method</span><strong>${o.paymentMethod}${o.paymentNote ? ' · ' + o.paymentNote : ''}</strong></div>` : ''}
+      </div>
+    </div>
+    <div class="modal-actions">
+      ${balance(o) > 0 ? `<button class="button button-primary" data-payment="${o.id}"><i data-lucide="wallet"></i> Record payment</button>
+      <button class="button button-secondary quick-paid" data-mark-paid="${o.id}"><i data-lucide="check-circle-2"></i> Mark fully paid</button>` : ''}
+      <button class="button button-secondary" data-whatsapp="${o.phone}" data-message="Hi ${o.name}, a quick update about your ${o.id} order from Maison Studio. ${balance(o) ? 'The outstanding balance is ' + money(balance(o)) + '.' : 'Your order is fully paid — thank you!'}"><i data-lucide="message-circle"></i> WhatsApp customer</button>
+    </div>
+    <p class="form-note" style="margin-top:13px">Demo action only: confirm the actual transfer before marking an order fully paid.</p>`);
+}
+function paymentModal(id){
+  const o = state.orders.find(x => x.id === id);
+  if (!o) return;
+  const remaining = balance(o);
+  openModal(`Record payment · ${o.id}`, `
+    <form class="modal-form" id="paymentForm" data-id="${o.id}">
+      <div class="modal-section"><div class="payment-breakdown">
+        <div class="payment-line"><span>Order total</span><strong>${money(o.total)}</strong></div>
+        <div class="payment-line"><span>Already recorded</span><strong>${money(o.paid)}</strong></div>
+        <div class="payment-line balance"><span>Outstanding</span><strong>${money(remaining)}</strong></div>
+      </div></div>
+      <div class="form-grid">
+        <div class="form-field"><label for="paymentAmount">Amount received (₦)</label>
+          <input id="paymentAmount" name="amount" type="number" min="1" max="${remaining}" step="any" value="${remaining}" ${remaining === 0 ? 'disabled' : ''} required></div>
+        <div class="form-field"><label for="paymentMethod">Payment method</label>
+          <select id="paymentMethod" name="method"><option>Bank transfer</option><option>Cash</option><option>POS</option><option>Payment link</option></select></div>
+      </div>
+      <div class="form-field"><label for="paymentNote">Note (optional)</label>
+        <input id="paymentNote" name="note" placeholder="e.g. Transfer received at 2:15pm"></div>
+      <p class="form-note">Recording a payment updates this prototype only; it does not verify a bank transfer.</p>
+      <div class="modal-actions">
+        <button class="button button-primary" type="submit" ${remaining === 0 ? 'disabled' : ''}><i data-lucide="check"></i> Save payment</button>
+        ${remaining > 0 ? `<button class="button button-secondary" type="button" data-mark-paid="${o.id}"><i data-lucide="check-circle-2"></i> Mark fully paid</button>` : ''}
+      </div>
+    </form>`);
+}
+function markPaid(id){
+  const o = state.orders.find(x => x.id === id);
+  if (!o) return;
+  if (o.payment === 'Paid'){ toast(`${o.id} is already marked as paid.`); closeModal(); return; }
+  o.paid = o.total;
+  o.payment = 'Paid';
+  ensureCustomer(o);
+  saveState();
+  closeModal();
+  renderAll();
+  toast(`${o.id} marked fully paid. Demo record updated.`);
+}
+function addOrderModal(){
+  openModal('Add a new order', `
+    <form class="modal-form" id="newOrderForm">
+      <div class="form-grid">
+        <div class="form-field"><label for="noName">Customer name</label><input id="noName" name="name" required placeholder="Customer's full name" autocomplete="name"></div>
+        <div class="form-field"><label for="noPhone">WhatsApp number</label><input id="noPhone" name="phone" required placeholder="080..." autocomplete="tel"></div>
+      </div>
+      <div class="form-field"><label for="newProductSelect">Product</label>
+        <select name="product" id="newProductSelect">${state.products.map(p => `<option value="${p.id}">${p.name} — ${money(p.price)}${p.stock === 0 ? ' (out of stock)' : ''}</option>`).join('')}</select></div>
+      <div class="form-grid">
+        <div class="form-field"><label for="noVariant">Size / colour</label><input id="noVariant" name="variant" required placeholder="e.g. Black · M"></div>
+        <div class="form-field"><label for="noQty">Quantity</label><input id="noQty" name="qty" type="number" min="1" value="1" required></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field"><label for="noPaid">Amount already paid (₦)</label><input id="noPaid" name="paid" type="number" min="0" step="any" value="0" required></div>
+        <div class="form-field"><label for="noStatus">Fulfilment status</label>
+          <select id="noStatus" name="status"><option>Processing</option><option>Ready to ship</option><option>Delivered</option></select></div>
+      </div>
+      <p class="form-note">A demo order will be added to the dashboard. No message will be sent automatically.</p>
+      <div class="modal-actions"><button class="button button-primary" type="submit"><i data-lucide="plus"></i> Create order</button></div>
+    </form>`);
+}
+function addProductModal(){
+  openModal('Add inventory item', `
+    <form class="modal-form" id="newProductForm">
+      <div class="form-grid">
+        <div class="form-field"><label for="npName">Product name</label><input id="npName" name="name" required placeholder="e.g. Linen Blend Shirt"></div>
+        <div class="form-field"><label for="npCategory">Category</label>
+          <select id="npCategory" name="category"><option>Polos</option><option>Shirts</option><option>Trousers</option><option>Knitwear</option><option>Outerwear</option><option>Accessories</option></select></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field"><label for="npPrice">Price (₦)</label><input id="npPrice" name="price" type="number" min="1" step="any" required></div>
+        <div class="form-field"><label for="npStock">Opening stock</label><input id="npStock" name="stock" type="number" min="0" value="0" required></div>
+      </div>
+      <div class="form-field"><label for="npVariants">Sizes / colours</label><input id="npVariants" name="variants" placeholder="e.g. White / Navy · S–XL"></div>
+      <div class="modal-actions"><button class="button button-primary" type="submit"><i data-lucide="plus"></i> Add product</button></div>
+    </form>`);
+}
+function addCustomerModal(){
+  openModal('Add customer', `
+    <form class="modal-form" id="newCustomerForm">
+      <div class="form-field"><label for="ncName">Customer name</label><input id="ncName" name="name" required></div>
+      <div class="form-field"><label for="ncPhone">WhatsApp number</label><input id="ncPhone" name="phone" required placeholder="080..." autocomplete="tel"></div>
+      <div class="modal-actions"><button class="button button-primary" type="submit"><i data-lucide="user-plus"></i> Save customer</button></div>
+    </form>`);
+}
+function exportCSV(type){
+  let rows = [];
+  const filename = `maison-${type}-${new Date().toISOString().slice(0,10)}.csv`;
+  if (type === 'orders' || type === 'report'){
+    rows = [['Order ID','Customer','Phone','Product','Variant','Quantity','Total','Paid','Balance','Payment status','Fulfilment status','Date'],
+      ...state.orders.map(o => [o.id,o.name,o.phone,o.product,o.variant,o.qty,o.total,o.paid,balance(o),o.payment,o.status,o.date])];
+  } else if (type === 'inventory'){
+    rows = [['SKU','Product','Category','Price','Stock','Units sold','Variants'],
+      ...state.products.map(p => [p.id,p.name,p.category,p.price,p.stock,p.sold,p.variants])];
+  } else if (type === 'customers'){
+    rows = [['Name','Phone','Orders','Recorded spend','Outstanding','Last order'],
+      ...state.customers.map(c => [c.name,c.phone,c.orders,c.spent,
+        state.orders.filter(o => o.name === c.name).reduce((s,o) => s + balance(o), 0), c.last])];
+  } else if (type === 'payments'){
+    rows = [['Order ID','Customer','Total','Paid','Balance','Payment status'],
+      ...state.orders.map(o => [o.id,o.name,o.total,o.paid,balance(o),o.payment])];
+  }
+  const csv = rows.map(row => row.map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+  toast('Your CSV export is ready.');
+}
+
+/* ============ search ============ */
+let searchTimer = null;
+function handleGlobalSearch(q){
+  q = (q || '').trim();
+  if (!q) return;
+  const query = q.toLowerCase();
+  const o = state.orders.find(x => `${x.id} ${x.name} ${x.product} ${x.phone}`.toLowerCase().includes(query));
+  if (o){ openView('orders'); $('#orderSearch').value = q; renderOrders(); orderDetail(o.id); return; }
+  const p = state.products.find(x => `${x.name} ${x.id}`.toLowerCase().includes(query));
+  if (p){ openView('inventory'); $('#inventorySearch').value = q; renderInventory(); return; }
+  const c = state.customers.find(x => `${x.name} ${x.phone}`.toLowerCase().includes(query));
+  if (c){ openView('customers'); $('#customerSearch').value = q; renderCustomers(); return; }
+  toast('No matching order, product or customer found.');
+}
+
+/* ============ events ============ */
+document.addEventListener('click', e => {
+  const nav = e.target.closest('[data-view]');
+  if (nav){ openView(nav.dataset.view); return; }
+  const go = e.target.closest('[data-go]');
+  if (go){ openView(go.dataset.go); return; }
+  if (e.target.closest('[data-close-modal]')){ closeModal(); return; }
+  const order = e.target.closest('[data-order]');
+  if (order){ orderDetail(order.dataset.order); return; }
+  const payment = e.target.closest('[data-payment]');
+  if (payment){ paymentModal(payment.dataset.payment); return; }
+  const paid = e.target.closest('[data-mark-paid]');
+  if (paid){ markPaid(paid.dataset.markPaid); return; }
+  const wa = e.target.closest('[data-whatsapp]');
+  if (wa){
+    const c = wa.dataset.customer || 'there';
+    whatsapp(wa.dataset.whatsapp, wa.dataset.message || `Hi ${c}, this is Maison Studio. Just checking in with you regarding your order. Let us know if we can help!`);
+    return;
+  }
+  const product = e.target.closest('[data-product]');
+  if (product){
+    const p = state.products.find(x => x.id === product.dataset.product);
+    if (p) openModal(p.name, `
+      <form id="editProductForm" class="modal-form" data-id="${p.id}">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:4px">${imageTag(p.img,'','')}<div><strong style="font-size:12px">${p.name}</strong><small style="display:block;color:#a3a2b3;font-size:9px;margin-top:3px">${p.category} · ${p.id} · ${p.sold} sold</small></div></div>
+        <div class="form-grid">
+          <div class="form-field"><label>Product price (₦)</label><input name="price" type="number" min="1" step="any" value="${p.price}" required></div>
+          <div class="form-field"><label>Available stock</label><input name="stock" type="number" min="0" value="${p.stock}" required></div>
+        </div>
+        <div class="form-field"><label>Variant details</label><input name="variants" value="${p.variants}"></div>
+        <div class="modal-actions"><button class="button button-primary" type="submit">Save changes</button></div>
+      </form>`);
+    return;
+  }
+});
+
+$('#modalOverlay').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); $('#globalSearch').focus(); }
+});
+$('#mobileMenu').addEventListener('click', () => $('#sidebar').classList.toggle('open'));
+
+$('#newOrderButton').addEventListener('click', addOrderModal);
+$('#ordersAddButton').addEventListener('click', addOrderModal);
+$('#addProductButton').addEventListener('click', addProductModal);
+$('#addCustomerButton').addEventListener('click', addCustomerModal);
+
+$('#helpButton').addEventListener('click', () => openModal('Your store, organised', `
+  <div class="modal-section"><h3>One workspace. Fewer loose ends.</h3>
+    <p style="font-size:11px;line-height:1.8;color:#88879c;margin:0">Track customer orders, see outstanding balances, keep stock organised and open WhatsApp follow-ups without digging through old chats. This is a visual prototype with sample data; a live version can connect to a real database and your actual business workflow.</p></div>
+  <div class="modal-actions"><button class="button button-primary" data-go="orders">Explore orders</button><button class="button button-secondary" data-go="payments">Explore payments</button></div>`));
+
+$('#notificationButton').addEventListener('click', () => {
+  const list = $('#attentionList').innerHTML;
+  openModal('Notifications', list.trim()
+    ? `<div class="attention-list" style="padding:0">${list}</div>`
+    : `<div class="empty-state"><i data-lucide="check-circle-2"></i>You're all caught up.</div>`);
+});
+
+$('#globalSearch').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => handleGlobalSearch(e.target.value), 450); // live search, debounced
+});
+$('#globalSearch').addEventListener('keydown', e => {
+  if (e.key === 'Enter'){ clearTimeout(searchTimer); handleGlobalSearch(e.target.value); }
+});
+
+$('#orderSearch').addEventListener('input', renderOrders);
+$('#inventorySearch').addEventListener('input', renderInventory);
+$('#customerSearch').addEventListener('input', renderCustomers);
+$('#paymentSearch').addEventListener('input', renderPayments);
+
+$('#orderFilters').addEventListener('click', e => {
+  const b = e.target.closest('[data-filter]');
+  if (!b) return;
+  activeOrderFilter = b.dataset.filter;
+  $$('#orderFilters button').forEach(x => x.classList.toggle('selected', x === b));
+  renderOrders();
+});
+$('#paymentFilters').addEventListener('click', e => {
+  const b = e.target.closest('[data-filter]');
+  if (!b) return;
+  activePaymentFilter = b.dataset.filter;
+  $$('#paymentFilters button').forEach(x => x.classList.toggle('selected', x === b));
+  renderPayments();
+});
+$('#chartRange').addEventListener('click', e => {
+  const b = e.target.closest('[data-range]');
+  if (!b) return;
+  chartRange = Number(b.dataset.range);
+  $$('#chartRange button').forEach(x => x.classList.toggle('selected', x === b));
+  initChart('revenueChart', chartRange, 'main');
+});
+$('#reportRange').addEventListener('click', e => {
+  const b = e.target.closest('[data-range]');
+  if (!b) return;
+  $$('#reportRange button').forEach(x => x.classList.toggle('selected', x === b));
+  initChart('reportChart', Number(b.dataset.range), 'report');
+});
+
+$('#exportOverview').addEventListener('click', () => exportCSV('report'));
+$('#exportOrders').addEventListener('click', () => exportCSV('orders'));
+$('#exportInventory').addEventListener('click', () => exportCSV('inventory'));
+$('#exportCustomers').addEventListener('click', () => exportCSV('customers'));
+$('#exportPayments').addEventListener('click', () => exportCSV('payments'));
+$('#exportFullReport').addEventListener('click', () => exportCSV('report'));
+
+$('#resetDemo').addEventListener('click', () => {
+  if (confirm('Reset all demo changes and restore the original sample data?')){
+    state = JSON.parse(JSON.stringify(seed));
+    saveState();
+    renderAll();
+    toast('Demo data has been reset.');
+  }
+});
+
+document.addEventListener('submit', e => {
+  if (e.target.id === 'paymentForm'){
+    e.preventDefault();
+    const o = state.orders.find(x => x.id === e.target.dataset.id);
+    if (!o) return;
+    const f = new FormData(e.target);
+    const amount = Number(f.get('amount'));
+    if (!Number.isFinite(amount) || amount <= 0 || amount > balance(o)){ toast('Enter an amount within the outstanding balance.'); return; }
+    o.paid = Math.min(o.total, o.paid + amount);
+    o.payment = o.paid >= o.total ? 'Paid' : 'Partially paid';
+    o.paymentMethod = f.get('method');
+    const note = f.get('note');
+    if (note) o.paymentNote = note;
+    ensureCustomer(o);
+    saveState();
+    closeModal();
+    renderAll();
+    toast(o.payment === 'Paid' ? `${o.id} is now fully paid.` : `Payment recorded. ${money(balance(o))} remains.`);
+  }
+  if (e.target.id === 'newOrderForm'){
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const p = state.products.find(x => x.id === f.get('product'));
+    const qty = Math.max(1, Math.round(Number(f.get('qty')) || 1));
+    if (p && p.stock < qty){ toast(`Only ${p.stock} left in stock for ${p.name}.`); return; }
+    const total = (p?.price || 0) * qty;
+    const paid = Math.min(total, Math.max(0, Number(f.get('paid')) || 0));
+    const order = {
+      id: nextOrderId(),
+      name: String(f.get('name')).trim(), phone: String(f.get('phone')).trim(),
+      product: p?.name || 'Custom item', variant: String(f.get('variant')).trim(),
+      qty, total, paid,
+      payment: paid >= total ? 'Paid' : paid > 0 ? 'Partially paid' : 'Pending',
+      status: f.get('status'), date: today, img: p?.img || 'polo'
+    };
+    state.orders.unshift(order);
+    if (p){ p.stock = Math.max(0, p.stock - qty); p.sold += qty; }
+    ensureCustomer(order);
+    saveState();
+    closeModal();
+    renderAll();
+    openView('orders');
+    toast(`${order.id} added to your order list.`);
+  }
+  if (e.target.id === 'newProductForm'){
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const category = f.get('category');
+    state.products.push({
+      id: nextProductId(),
+      name: String(f.get('name')).trim(), category,
+      price: Number(f.get('price')) || 0, stock: Math.max(0, Math.round(Number(f.get('stock')) || 0)),
+      sold: 0, img: categoryImages[category] || 'shirt',
+      variants: String(f.get('variants') || '').trim() || 'Sizes / colours to be added'
+    });
+    saveState();
+    closeModal();
+    renderAll();
+    toast('Product added to inventory.');
+  }
+  if (e.target.id === 'newCustomerForm'){
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const name = String(f.get('name')).trim();
+    const phone = String(f.get('phone')).trim();
+    if (customerByName(name)){ toast(`${name} is already in your directory.`); return; }
+    state.customers.unshift({ name, phone, orders: 0, spent: 0, last: '—' });
+    saveState();
+    closeModal();
+    renderAll();
+    toast('Customer saved to your directory.');
+  }
+  if (e.target.id === 'editProductForm'){
+    e.preventDefault();
+    const p = state.products.find(x => x.id === e.target.dataset.id);
+    if (!p) return;
+    const f = new FormData(e.target);
+    p.price = Number(f.get('price')) || p.price;
+    p.stock = Math.max(0, Math.round(Number(f.get('stock')) || 0));
+    p.variants = String(f.get('variants') || '').trim() || p.variants;
+    saveState();
+    closeModal();
+    renderAll();
+    toast('Inventory changes saved.');
+  }
+});
+
+/* ============ boot ============ */
+renderAll();
+</script>
+</body>
+</html>
